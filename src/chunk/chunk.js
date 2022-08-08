@@ -33,4 +33,4 @@ const arr3 = [1, 3, 5, 7];
 const arr4 = [1, 4 ,5, 8];
 console.log(Mon.union(arr1, arr2, arr3, arr4));
 }
-modeule.exports.uniqueArr = unions
+module.exports.uniqueArr = unions
