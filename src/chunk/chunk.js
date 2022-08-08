@@ -20,9 +20,9 @@ const odd = function(){
 module.exports.tailed = odd
 
 const pairs= function (){
-    let Arrays = [ ['horror','The Shining'], ['drama','Titanic'], ['thriller','Shutter Island'],['fantasy','Pans Labyrinth']]
+    let arr = [ ['horror','The Shining'], ['drama','Titanic'], ['thriller','Shutter Island'],['fantasy','Pans Labyrinth']]
     
-    console.log(Mon.frompairs(Array));
+    console.log(Mon.fromPairs(arr));
 }
 module.exports.keyValue = pairs
 
