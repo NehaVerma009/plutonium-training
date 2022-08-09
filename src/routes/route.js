@@ -35,8 +35,10 @@ router.get('/student-details/:name', function(req, res){
     res.send('Dummy response')
 })
 //Array 
-
+//Assignment -----------//
 let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
+
+//----------Problem 1----------
 
 //     router.get('/movies', function(req, res){
 //        //print movies
@@ -45,12 +47,14 @@ let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 
 // })
 
-//to get element from indexnumber
+//------Problem 2 ----------to get element from indexnumber
+
 //  router.get('/movies/:indexNumber', function (req, res){
 //     let requestParams = req.params.indexNumber
     
 //     //res.send(movies[requestParams])
 // })
+//-----------------Problem 3----------
 
 //  router.get('/movies/:indexNumber',function(req,res){
 //     const movies=['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins'];
@@ -63,7 +67,8 @@ let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 //         res.send("Input Valid Index")
 //     }
 // })
-// //Problem 4
+
+// ---------Problem 4-----------
 
 // router.get('/films', function(req, res){
 //     let arr = [ {
@@ -84,35 +89,36 @@ let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 //     res.send(arr)
 // })
 
-//Problem 5
+//-----------Problem 5--------
 
-router.get('/films/:filmId', function(req, res){
-    let list= [ {
-        'id': 1,
-        'name': 'The Shining'
-       }, {
-        'id': 2,
-        'name': 'Incendies'
-       }, {
-        'id': 3,
-        'name': 'Rang de Basanti'
-       }, {
-        'id': 4,
-        'name': 'Finding Nemo'
-       }]
-       let requestParams = req.params
-       let index=requestParams.filmId;
-if(filmId==id[i]){
-    res.send([i])
+// router.get('/films/:filmId', function(req, res){
+//     let films = [ {
+//         'id': 1,
+//         'name': 'The Shining'
+//        }, {
+//         'id': 2,
+//         'name': 'Incendies'
+//        }, {
+//         'id': 3,
+//         'name': 'Rang de Basanti'
+//        }, {
+//         'id': 4,
+//         'name': 'Finding Nemo'
+//        }]
+
+//        let filmId = req.params.filmId
+//        for (i=0 ; i<films.length ; i++){
+//         let film= films[i]
+//         if (film.id== filmId){
+//             return res.send(film)
+//         }
+
+//        }
+
+//        res.send(['Please input valid FilmId'])
 
 
-}
-
-else{
-    res.send()
-
-}
-})
+//})
 
 
 module.exports = router;
