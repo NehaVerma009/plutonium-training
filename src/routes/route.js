@@ -36,6 +36,8 @@ router.get('/student-details/:name', function(req, res){
 })
 //Array 
 //Assignment -----------//
+//-----Problem1---------
+
 let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 
 //----------Problem 1----------
@@ -52,7 +54,7 @@ let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 //  router.get('/movies/:indexNumber', function (req, res){
 //     let requestParams = req.params.indexNumber
     
-//     //res.send(movies[requestParams])
+//     res.send(movies[requestParams])
 // })
 //-----------------Problem 3----------
 
@@ -63,9 +65,9 @@ let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 //     if(index>=0 && index<=movies.length){
 //         res.send(movies[index])
 //     }
-//     else{
+    
 //         res.send("Input Valid Index")
-//     }
+   
 // })
 
 // ---------Problem 4-----------
@@ -91,34 +93,34 @@ let movies= ['Don', 'Rang De Basanti','Silent Sea','Chak De India']
 
 //-----------Problem 5--------
 
-// router.get('/films/:filmId', function(req, res){
-//     let films = [ {
-//         'id': 1,
-//         'name': 'The Shining'
-//        }, {
-//         'id': 2,
-//         'name': 'Incendies'
-//        }, {
-//         'id': 3,
-//         'name': 'Rang de Basanti'
-//        }, {
-//         'id': 4,
-//         'name': 'Finding Nemo'
-//        }]
+router.get('/films/:filmId', function(req, res){
+    let films = [ {
+        'id': 1,
+        'name': 'The Shining'
+       }, {
+        'id': 2,
+        'name': 'Incendies'
+       }, {
+        'id': 3,
+        'name': 'Rang de Basanti'
+       }, {
+        'id': 4,
+        'name': 'Finding Nemo'
+       }]
 
-//        let filmId = req.params.filmId
-//        for (i=0 ; i<films.length ; i++){
-//         let film= films[i]
-//         if (film.id== filmId){
-//             return res.send(film)
-//         }
+       let filmId = req.params.filmId
+       for (i=0 ; i<films.length ; i++){
+        let film= films[i]
+        if (film.id== filmId){
+            return res.send(film)
+        }
 
-//        }
+       }
 
-//        res.send(['Please input valid FilmId'])
+       res.send(['Please input valid FilmId'])
 
 
-//})
+})
 
 
 module.exports = router;
