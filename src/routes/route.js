@@ -259,7 +259,7 @@ let persons=
         let output = persons.filter(x=>x.votingStatus==true)
         res.send(output)
 
-    
+
  })
 
 

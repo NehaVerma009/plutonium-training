@@ -15,7 +15,6 @@ mongoose.connect("mongodb+srv://NehaVerma009:AkDtK7c4jOOdzH9P@cluster0.r6xdcuv.m
 
 
 
-
 app.use('/',route)
 
 app.listen(process.env.PORT || 3000, function() {
