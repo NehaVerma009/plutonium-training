@@ -15,13 +15,13 @@ const bookList2 = async function (req, res){
 }
 const getBooksInYear = async function (req, res){
     let booksYear = req.query.year
-    let BooksInYear = await bookModel.find({year : booksYear }).select({ bookName : 1})
+    let BooksInYear = await bookModel.find({year : booksYear }).select({ bookName : 1, _id :0})
     res.send({msg : BooksInYear})
 }
 
 const getParticularBooks = async function(req, res){
     let particularBook = req.query.authorName
-    let getAllBook = await bookModel.find({authorName : particularBook})
+    let getAllBook = await bookModel.find({authorName : particularBook}).select({bookName : 1})
     res.send({msg : getAllBook})
 }
 
@@ -33,7 +33,7 @@ const getXINRBooks = async function (req, res){
 }
 
 const getRandomBooks = async function (req, res ){
-    let randomBook = await bookModel.find({$or: [{stockAvailable :true} ,{totalPages: {$gt : 200} }] })
+    let randomBook = await bookModel.find({$or: [{stockAvailable :true} ,{totalPages: {$gt : 500} }] })
     res.send({msg : randomBook})
 
 }
