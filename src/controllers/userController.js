@@ -12,22 +12,10 @@ const basicCode= async function(req, res) {
     res.send({ msg: "This is coming from controller (handler)"})
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const testMiddleware = function(req, res){
+    console.log("Middleware Tested")
+    res.send("Testing done")
+}
 
 
 const createUser= async function (req, res) {
@@ -44,3 +32,4 @@ const getUsersData= async function (req, res) {
 module.exports.createUser= createUser
 module.exports.getUsersData= getUsersData
 module.exports.basicCode= basicCode
+module.exports.testMiddleware= testMiddleware
