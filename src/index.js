@@ -21,6 +21,7 @@ mongoose.connect("mongodb+srv://NehaVerma009:A9CEHRbpunBJ90to@cluster0.r6xdcuv.m
 //         next();
 //   }
 //   );
+//<<<<<<< HEAD
 
   app.use(
     function(req, res,next){
@@ -31,6 +32,9 @@ mongoose.connect("mongodb+srv://NehaVerma009:A9CEHRbpunBJ90to@cluster0.r6xdcuv.m
         next()
     }
   )
+//=======
+  
+//>>>>>>> 9e4c16d4ea1ae2e8bdde64eac93caf8467fd54bc
 
 app.use('/', route);
 
