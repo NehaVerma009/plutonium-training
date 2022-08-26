@@ -32,7 +32,7 @@ const loginUser = async function (req, res) {
   // Input 2 is the secret (This is basically a fixed value only set at the server. This value should be hard to guess)
   // The same secret will be used to decode tokens 
   let token = jwt.sign(
-    {
+    {//---------Payload--------
       userId: user._id.toString(),
       batch: "thorium",
       organisation: "FunctionUp",
