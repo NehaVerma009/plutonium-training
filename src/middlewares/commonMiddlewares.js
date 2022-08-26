@@ -22,12 +22,20 @@ const UserController1 = require("../controllers/newUserController")
 // }
 const headercheck = function (req, res, next){
     let header = req.headers.isfreeappuser
-    if(!header){
-        return res.send(" The request is missing a mandatory header")
-    } 
-    req.isfreeappuser=header
+    // if(!header){
+    //     return res.send(" The request is missing a mandatory header")
+        
+    // } 
 
-    next()
+    if(header===undefined|| header ==" " ){
+        return res.send(" The request is missing a mandatory header")
+        
+    }else {req.isfreeappuser=header
+        next()
+    }
+    
+
+    
 }
 
 module.exports.headercheck =headercheck
@@ -42,4 +50,5 @@ module.exports.headercheck =headercheck
 // module.exports.mid2= mid2
 // module.exports.mid3= mid3
 // module.exports.mid4= mid4
+
 

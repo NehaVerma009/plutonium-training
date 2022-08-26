@@ -19,7 +19,8 @@ const orderSchema = new mongoose.Schema({
     ref: "products"},
     amount: Number,
     isFreeAppUser: {
-        type: Boolean  
+        type: Boolean, 
+        default : false
     },
     date: String
 },{timestamps : true})
