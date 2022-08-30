@@ -15,8 +15,8 @@ const createUser = async function (req, res) {
     let savedData = await userModel.create(data);
   //console.log(req.newAtribute);
 
-  res.status(201).send({ msg: savedData });
-}
+ res.status(201).send({ msg: savedData });
+ }
 else
 res.status(400).send({msg:"BAD REQUEST"})
 }
@@ -31,7 +31,7 @@ const loginUser = async function (req, res) {
   let userName = req.body.emailId;
   let password = req.body.password;
 
-  let user = await userModel.findOne({ emailId: userName, password: password });
+   let user = await userModel.findOne({ emailId: userName, password: password });
   if (!user)
     return res.status(404).send(
       {
@@ -55,7 +55,7 @@ const loginUser = async function (req, res) {
   );
   res.setHeader("x-auth-token", token);
   
-  res.status(201).send({ status: true, data: token });
+  res.status(200).send({ status: true, data: token });
   }
   catch(err){
     console.log("This is the error:",err.message)
@@ -82,7 +82,7 @@ try{
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
   if (!userDetails){
-    return res.send({ status: false, msg: "No such user exists" });
+    return res.status(404).send({ status: false, msg: "No such user exists" });
   }
   res.status(200).send({ status: true, data: userDetails });
 }
