@@ -79,6 +79,10 @@ let getOtp = async function (req, res) {
 }
 
 
+
+
+
+
 module.exports.getStates = getStates
 module.exports.getDistricts = getDistricts
 module.exports.getByPin = getByPin
