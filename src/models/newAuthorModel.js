@@ -6,6 +6,7 @@ const authorSchema = new mongoose.Schema({
         type: String,
         required :true
     },
+    
     age : Number,
     address : String, 
     rating: Number

@@ -32,6 +32,17 @@ const allBooks = async function (req, res) {
   res.send(books);
 };
 
+
+// const findData = async function(req, res){
+// let Name = req.body
+// console.log(Name)
+// let books = await newAuthorModel.find({Name:authorName}).populate("authornewLibraryBooks").populate("publisher")
+// res.send(books)
+
+
+// }
+
+
 const updatedHardCover = async function (req, res) {
   let publisherId = await newPublisherModel
     .find({ name: ["Penguin", "HarperCollins"] }).select({ _id:1});
@@ -52,3 +63,4 @@ const updatedHardCover = async function (req, res) {
 module.exports.createBook = createBook;
 module.exports.allBooks = allBooks;
 module.exports.updatedHardCover = updatedHardCover;
+module.exports.findData = findData
