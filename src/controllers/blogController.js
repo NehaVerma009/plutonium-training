@@ -1,57 +1,186 @@
 
-const blog = require("../models/blogModel")
+const blogs = require("../models/blogModel")
 const authorModel = require("../models/authorModel");
 const  mongoose = require('mongoose')
+const jwt=  require("jsonwebtoken")
+const ObjectId = require('mongoose').Types.ObjectId
 
 
+//===============================createblog======================//
 const createBlog = async function (req, res) {
     try {
-        let Blog = req.body;
-        // if(!(Blog.authorId==req.decodedToken)){res.send({msg:"author unauthorised"})}
-        let published = req.body.published;
-
-        if (!Blog.authorId) {
-            res.status(400).send({ msg: "AuthorId is not present" });
-        }
-        let authorId = await authorModel.findById({ _id: Blog.authorId });
-        if (!authorId) {
-            res.status(400).send({ msg: "AuthorId is Invalid" });
-        }
-
-        let BlogCreated = await blog.create(Blog);
-        res.status(201).send({ data: BlogCreated });
-        if (!Blog) {
-            res.status(404).send({ msg: "This is Invalid Request", status: false });
-        }
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send({ msg: err.message });
+      let blog = req.body
+      if (Object.keys(blog).length == 0) {
+        return res.status(400).send({ status: false, msg: "No data to create a blog" })
+      }
+      let author_id = blog.authorId
+      if (!author_id) {
+        return res.status(400).send({ status: false, msg: "Author Id should be present in the blog data" })
+      }
+      if (!ObjectId.isValid(author_id)) {
+        return res.status(404).send({ status: false, msg: "AuthorId invalid" });
+      }
+      let validAuthor = await authorModel.findById(author_id)
+      if (!validAuthor) {
+        return res.status(404).send({ status: false, msg: "Author data not found" });
+      }
+      let token = req.headers["x-api-key"]
+      let decodedToken = jwt.verify(token, "Blogging-Mini-Site(Project1)" );
+      let authorLoggedIn = decodedToken.authorId
+      if (authorLoggedIn != author_id) {
+        return res.status(403).send({ status: false, msg: "Author logged in cannot create blog with another author's Id" })
+      }
+      let is_published = blogs.published
+      if (is_published == true) {
+        blog.publishedAt = new Date()
+        let blogCreated = await blogs.create(blog)
+        return res.status(201).send({ status: true, data: blogCreated })
+      }
+      let blogCreated = await blogs.create(blog)
+      return res.status(201).send({ status: true, data: blogCreated })
+    } catch (error) {
+      return res.status(500).send({ status: false, msg: error.message })
     }
+  }
+  
+
+//=====================getblog========================//
+
+const getblog = async function (req, res) {
+    try {
+const isValid = function (value) {
+    if (typeof value === "undefined" || value === null) return false;
+    if (typeof value === "string" && value.trim().length > 0) return true; // validation of string or not            return false;
 };
+const isValidRequest = function (object) {
+    return Object.keys(object).length > 0         //validation of keys 
+};
+const isValidObjectId = function (objectId) {
+    return mongoose.Types.ObjectId.isValid(objectId)    //validation of id 
+};
+        const requestBody = req.body;
+        const queryParams = req.query;
 
-// const createBlog= async function (req, res) {
-//     try{
-//     let Blog = req.body
-//     let authorId= await authorModel.findById({_id:Blog.authorId})
-//     if(!authorId){
-//        return res.status(400).send({msg:"AuthorId is Invalid"})
-//     }
-    
+        //conditions to find all not deleted blogs
+        const filterCondition = {
+            Deleted: false,
+            published: true,
+            deletedAt: null
+        };
 
-//     let BlogCreated = await blog.create(Blog);
-//    res.status(201).send({ data: BlogCreated });
-//     if (!Blog) {
-//      return res.status(404).send({ msg: "This is Invalid Request", status: false });
-//     }
-//   } catch (err) {
-//     console.log(err.message);
-//     res.status(500).send({ msg: err.message });
-//   }
+        if (isValidRequest(requestBody)) {          //  validation  of req body
+            return res
+                .status(400)
+                .send({ status: false, message: "data is required in body" });
+        }
 
-// }
+        //if queryParams are present then each key to be validated then only to be added to filterCondition object. on that note filtered blogs to be returened
+        if (isValidRequest(queryParams)) {
+            const { authorId, category, tags, subcategory } = queryParams;//Destructuring
+
+            if (queryParams.hasOwnProperty("authorId")) {   //it checks authorId (key) exist or not
+                if (!isValidObjectId(authorId)) {
+                    return res
+                        .status(400)
+                        .send({ status: false, message: "Enter a valid authorId" });
+                }
+                const authorByAuthorId = await authorModel.findById(authorId);
+
+                if (!authorByAuthorId) {
+                    return res
+                        .status(400)
+                        .send({ status: false, message: "no author found" })
+                }
+                filterCondition["authorId"] = authorId;
+            }
+
+            if (queryParams.hasOwnProperty("category")) {
+                if (!isValid(category)) {
+                    return res
+                        .status(400)
+                        .send({ status: false, message: "Blog category should be in valid format" });
+                }
+                filterCondition["category"] = category.trim();
+            }
+
+            //if tags and subcategory are an array then validating each element
+            if (queryParams.hasOwnProperty("tags")) {
+                if (Array.isArray(tags)) {
+                    for (let i = 0; i < tags.length; i++) {
+                        if (!isValid(tags[i])) {
+                            return res
+                                .status(400)
+                                .send({ status: false, message: "blog tag must be in valid format" });
+                        }
+                        filterCondition["tags"] = tags[i].trim();
+                    }
+                } else {
+                    if (!isValid(tags)) {
+                        return res
+                            .status(400)
+                            .send({ status: false, message: "Blog tags must in valid format" });
+                    }
+                    filterCondition["tags"] = tags.trim();
+                }
+            }
+
+            if (queryParams.hasOwnProperty("subcategory")) {
+                if (Array.isArray(subcategory)) {
+                    for (let i = 0; i < subcategory.length; i++) {
+                        if (!isValid(subcategory[i])) {
+                            return res
+                                .status(400)
+                                .send({ status: false, message: "blog subcategory must be in valid format" });
+                        }
+                        filterCondition["subcategory"] = subcategory[i].trim();
+                    }
+                } else {
+                    if (!isValid(subcategory)) {
+                        return res
+                            .status(400)
+                            .send({ status: false, message: "Blog subcategory must in valid format" });
+                    }
+                    filterCondition["subcategory"] = subcategory.trim();
+                }
+            }
+
+            const filetredBlogs = await blogs.find(filterCondition)
+
+            if (filetredBlogs.length == 0) {
+                return res
+                    .status(404)
+                    .send({ status: false, message: "no blogs found" });
+            }
+            res
+                .status(200)
+                .send({ status: true, message: "filtered blog list", blogsCounts: filetredBlogs.length, blogList: filetredBlogs })
+
+            //if no queryParams are provided then finding all not deleted blogs
+        } else {
+            const allBlogs = await blog.find(filterCondition);
+
+            if (allBlogs.length == 0) {
+                return res
+                    .status(404)
+                    .send({ status: false, message: "no blogs found" })
+            }
+            res
+                .status(200)
+                .send({ status: true, message: "blogs list", blogsCount: allBlogs.length, blogsList: allBlogs });
+        }
+
+    } catch (error) {
+
+        res.status(500).send({ error: error.message })
+
+    }
+}
 
 
-//=====================UpdateBlog========================================
+
+
+//=====================UpdateBlog========================================//
+
 const updatedBlog = async function (req, res) {
     try {
         const isValid = function (value) {
@@ -87,7 +216,7 @@ const updatedBlog = async function (req, res) {
                 .send({ status: false, message: "Enter a valid blogId" })
         }
 
-        const blogByBlogID = await blog.findOne({
+        const blogByBlogID = await blogs.findOne({
             _id: blogId,
             isDeleted: false,
             deletedAt: null
@@ -167,7 +296,7 @@ const updatedBlog = async function (req, res) {
             }
         }
 
-        const updatedBlog = await blog.findOneAndUpdate(
+        const updatedBlog = await blogs.findOneAndUpdate(
             { _id: blogId, isDeleted: false, deletedAt: null },
             update,
             { new: true }
@@ -184,32 +313,22 @@ const updatedBlog = async function (req, res) {
     }
 }
 
-//=========================
+//=========================deleteblog=================//
 
 const deleteBlog = async function(req, res) {    
     let blogId = req.params.blogId
-    let blogs = await blog.findOneAndUpdate(
-        {_id:blogId},//condition
-        {Deleted:true},//update
-        {new:true})//return updated value
+    let blog1 = await blogs.findOneAndUpdate({_id:blogId},{Deleted:true},{new:true})
     if(!blogs) { 
   
         return res.status(404).send({status: false, message: "Blog is not found"})
     }
          
-   res.status(200).send({status:true,data:blogs,deletedAt:Date()})    
+   res.status(200).send({status:true,data:blog1,deletedAt:Date()})    
   
   
   
   }
-  
-  
-  
-  
-
 //====================================delete query param================//
-
-
 
   const deleteBlog2 = async function(req, res) {    
         try {
@@ -250,7 +369,7 @@ const deleteBlog = async function(req, res) {
 
 
 
-const getblog = async function (req, res) {
+/*const getblog = async function (req, res) {
     try {
 const isValid = function (value) {
     if (typeof value === "undefined" || value === null) return false;
@@ -356,34 +475,32 @@ const isValidObjectId = function (objectId) {
         res.status(500).send({ error: error.message })
 
     }
-}
+}*/
 //-------------token Creation & Login------------------------ 
 
-// const authorLogin = async function (req, res) {
-//     let userName = req.body.email;
-//     let password = req.body.password;
+ const authorLogin = async function (req, res) {
+     let userName = req.body.email;
+     let password = req.body.password;
   
-//     let author = await authorModel.findOne({ email: userName, password: password });
-//     if (!author)
-//       return res.status(404).send({
-//         status: false,
-//         msg: "Username or the Password is invalid",
-//       });
+     let author = await authorModel.findOne({ email: userName, password: password });
+    if (!author)
+      return res.status(404).send({
+         status: false,
+      msg: "Username or the Password is invalid",
+      });
   
-//     //----------token Generation-------------------
-//     let token = jwt.sign(
-//       {//--------Payload--------------------
-//         Member1:"Neha Verma",
-//         // Member2:"Sumit Negi",
-//         // Member3:"Saurav Kumar",
-//         // Member4:"Rahul Kumar",
-//       },//---------------------------Secret Key -----------------------------
-//       "Blogging-Mini-Site(Project1)"
-//     );
-//     res.setHeader("x-api-key", token);
-//     res.status(200).send({ status: true, data: token });
-//   };
+    
+    let token = jwt.sign(
+      {//--------Payload--------------------
+        authorId: author._id.toString()
 
+      },//---------------------------Secret Key -----------------------------
+      "Blogging-Mini-Site(Project1)"
+    );
+    res.setHeader("x-api-key", token);
+    res.send({ status: true, data: token });
+    
+    }
 
 
 module.exports.createBlog= createBlog
@@ -391,4 +508,4 @@ module.exports.updatedBlog= updatedBlog
 module.exports.deleteBlog= deleteBlog
 module.exports.deleteBlog2= deleteBlog2
 module.exports.getblog= getblog
-//module.exports.authorLogin= authorLogin
+module.exports.authorLogin= authorLogin
