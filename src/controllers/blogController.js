@@ -316,18 +316,60 @@ const updatedBlog = async function (req, res) {
 //=========================deleteblog=================//
 
 const deleteBlog = async function(req, res) {    
-    let blogId = req.params.blogId
-    let blog1 = await blogs.findOneAndUpdate({_id:blogId},{Deleted:true},{new:true})
-    if(!blogs) { 
-  
-        return res.status(404).send({status: false, message: "Blog is not found"})
+   
+  try {
+
+    const requestBody = req.body;
+    const queryParams = req.query;
+    const blogId = req.params.blogId;
+
+    if (isValidRequest(queryParams)) {
+        return res
+            .status(400)
+            .send({ status: false, message: "invalid Request" });
     }
-         
-   res.status(200).send({status:true,data:blog1,deletedAt:Date()})    
-  
-  
-  
-  }
+
+    if (isValidRequest(requestBody)) {
+        return res
+            .status(400)
+            .send({ status: false, message: "invalid Request" });
+    }
+
+    if (!isValidObjectId(blogId)) {
+        return res
+            .status(400)
+            .send({ status: false, message: `${id}  not a valid blogID` });
+    }
+
+    const blogById = await blogs.findOne({
+        _id: blogId,
+        Deleted: false,
+        deletedAt: null
+    })
+
+    if (!blogById) {
+        return res
+            .status(404)
+            .send({ status: false, message: `no blog found by ${blogId}` })
+    }
+
+    await blogs.findByIdAndUpdate(
+        { _id: blogId },
+        { $set: { Deleted: true, deletedAt: Date.now() } },
+        { new: true }
+    );
+
+    res
+        .status(200)
+        .send({ status: true, message: "blog is deleted" });
+
+} catch (error) {
+
+    res.status(500).status({ status: false, message: error.message })
+
+}
+}
+
 //====================================delete query param================//
 
   const deleteBlog2 = async function(req, res) {    
