@@ -178,7 +178,6 @@ const isValidObjectId = function (objectId) {
 
 
 
-
 //=====================UpdateBlog========================================//
 
 const updatedBlog = async function (req, res) {
@@ -317,59 +316,65 @@ const updatedBlog = async function (req, res) {
 
 const deleteBlog = async function(req, res) {    
    
-  try {
-
-    const requestBody = req.body;
-    const queryParams = req.query;
-    const blogId = req.params.blogId;
-
-    if (isValidRequest(queryParams)) {
-        return res
-            .status(400)
-            .send({ status: false, message: "invalid Request" });
-    }
-
-    if (isValidRequest(requestBody)) {
-        return res
-            .status(400)
-            .send({ status: false, message: "invalid Request" });
-    }
-
-    if (!isValidObjectId(blogId)) {
-        return res
-            .status(400)
-            .send({ status: false, message: `${id}  not a valid blogID` });
-    }
-
-    const blogById = await blogs.findOne({
-        _id: blogId,
-        Deleted: false,
-        deletedAt: null
-    })
-
-    if (!blogById) {
-        return res
-            .status(404)
-            .send({ status: false, message: `no blog found by ${blogId}` })
-    }
-
-    await blogs.findByIdAndUpdate(
-        { _id: blogId },
-        { $set: { Deleted: true, deletedAt: Date.now() } },
-        { new: true }
-    );
-
-    res
-        .status(200)
-        .send({ status: true, message: "blog is deleted" });
-
-} catch (error) {
-
-    res.status(500).status({ status: false, message: error.message })
-
-}
-}
-
+    try { 
+     
+  const isValidRequest = function (object) {
+      return Object.keys(object).length > 0         //validation of keys 
+  };
+  const isValidObjectId = function (objectId) {
+      return mongoose.Types.ObjectId.isValid(objectId)    //validation of id 
+  };
+  
+      const requestBody = req.body;
+      const queryParams = req.query;
+      const blogId = req.params.blogId;
+  
+      if (isValidRequest(queryParams)) {
+          return res
+              .status(400)
+              .send({ status: false, message: "invalid Request" });
+      }
+  
+      if (isValidRequest(requestBody)) {
+          return res
+              .status(400)
+              .send({ status: false, message: "invalid Request" });
+      }
+  
+      if (!isValidObjectId(blogId)) {
+          return res
+              .status(400)
+              .send({ status: false, message: `${id}  not a valid blogID` });
+      }
+  
+      const blogById = await blogs.findOne({
+          _id: blogId,
+          Deleted: false,
+          deletedAt: null
+      })
+  
+      if (!blogById) {
+          return res
+              .status(404)
+              .send({ status: false, message: `no blog found by ${blogId}` })
+      }
+  
+      await blogs.findByIdAndUpdate(
+          { _id: blogId },
+          { $set: { Deleted: true, deletedAt: Date.now() } },
+          { new: true }
+      );
+  
+      res
+          .status(200)
+          .send({ status: true, message: "blog is deleted" });
+  
+  } catch (error) {
+  
+      res.status(500).status({ status: false, message: error.message })
+  
+  }
+  }
 //====================================delete query param================//
 
   const deleteBlog2 = async function(req, res) {    
