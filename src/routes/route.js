@@ -22,7 +22,7 @@ router.put("/blogs/:blogId", mid1.authentication, mid1.authorization,blogControl
 router.delete("/blogs/:blogId",mid1.authentication, mid1.authorization,blogController.deleteBlog)
 router.delete("/blogs",blogController.deleteBlog2)
 router.get("/blogs",mid1.authentication,blogController.getblog)
-router.post("/login",blogController.authorLogin)
+router.post("/login",authorController.authorLogin)
 
 module.exports = router;
 
