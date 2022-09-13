@@ -10,12 +10,10 @@ const authentication = async function (req, res, next) {
             return res.status(400).send({ status: false, msg: "Token must be present" });
 
         let decodedToken = jwt.decode(token);
-        console.log(decodedToken)
         if (!decodedToken)
             return res.status(401).send({ status: false, msg: "Token is invalid" })
 
         jwt.verify(token, "Blogging-Mini-Site(Project1)");
-        
 
         next()
     } catch (error) {
@@ -58,5 +56,3 @@ const authorisation = async function (req, res, next) {
 
 module.exports.authentication=authentication
 module.exports.authorization=authorisation
-
-

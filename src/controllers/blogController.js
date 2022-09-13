@@ -19,7 +19,7 @@ const createBlog = async function (req, res) {
         return res.status(400).send({ status: false, msg: "Author Id should be present in the blog data" })
       }
       if (!ObjectId.isValid(author_id)) {
-        return res.status(400).send({ status: false, msg: "AuthorId invalid" });
+        return res.status(404).send({ status: false, msg: "AuthorId invalid" });
       }
       let validAuthor = await authorModel.findById(author_id)
       if (!validAuthor) {
@@ -179,6 +179,7 @@ const isValidObjectId = function (objectId) {
 
 
 
+
 //=====================UpdateBlog========================================//
 
 const updatedBlog = async function (req, res) {
@@ -224,7 +225,7 @@ const updatedBlog = async function (req, res) {
 
         if (!blogByBlogID) {
             return res
-                .status(404)
+                .status(400)
                 .send({ status: false, message: `no blog found by ${blogId}`});
         }
 
@@ -415,7 +416,7 @@ const isValidObjectId = function (objectId) {
   
   
 
-//-------------token Creation & Login------------------------ 
+
 
 
 
@@ -424,4 +425,3 @@ module.exports.updatedBlog= updatedBlog
 module.exports.deleteBlog= deleteBlog
 module.exports.deleteBlog2= deleteBlog2
 module.exports.getblog= getblog
-
