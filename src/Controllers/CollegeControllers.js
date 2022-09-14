@@ -64,7 +64,7 @@ const getCollege = async function (req, res) {
 
     if(Object.keys(data).length > 1) return res.status(400).send({status: false, message:"Only one parameter is allowed"})
 
-    if(req.body) return res.status(400).send({status: false, message:"Invalid request"})
+    if(Object.keys(req.body).length !=0 ) return res.status(400).send({status: false, message:"Invalid request due to body parameter"})
 
     //===================== Fetching collegeName from DB =====================//
     let college = await CollegeModel.findOne({ name: collegeName , isDeleted:false})
