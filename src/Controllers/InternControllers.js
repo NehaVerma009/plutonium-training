@@ -15,29 +15,33 @@ const createIntern = async function (req, res) {
     if (name) {
       return res.status(400).send({ status: false, message: name })
     }
-    let email = isValid.isValidEmail(data.email)
-    if (email) {
-      return res.status(400).send({ status: false, message: email })
-    }
 
     let mobile = isValid.isValidMobile(data.mobile)
     if (mobile) {
       return res.status(400).send({ status: false, message: mobile })
     }
 
+    let email = isValid.isValidEmail(data.email)
+    if (email) {
+      return res.status(400).send({ status: false, message: email })
+    }
+
+   
     let collegename = isValid.isValidcollegeName(data.collegeName)
     if (collegename) {
       return res.status(400).send({ status: false, message: collegename })
     }
 
-    let checkemail = await InternModel.findOne({ email: data.email, isDeleted: false })
-    if (checkemail) {
-      return res.status(404).send({ status: false, message: "email already exists." })
-    }
     let checkmobile = await InternModel.findOne({ mobile: data.mobile, isDeleted: false })
     if (checkmobile) {
-      return res.status(404).send({ status: false, message: "mobile number already exists." })
+      return res.status(400).send({ status: false, message: "mobile number already exists." })
     }
+
+    let checkemail = await InternModel.findOne({ email: data.email, isDeleted: false })
+    if (checkemail) {
+      return res.status(400).send({ status: false, message: "email already exists." })
+    }
+    
     let collegeName = data.collegeName
 
     let college = await CollegeModel.findOne({ name: collegeName })
@@ -46,7 +50,7 @@ const createIntern = async function (req, res) {
       data["collegeId"] = id
     }
     if (college == null) {
-      return res.status(404).send({ status: false, message: "College not found given collegename !" })
+      return res.status(400).send({ status: false, message: "College not found given collegename !" })
     }
     let createdata = await InternModel.create(data)
     return res.status(201).send({ status: true, data: createdata })
