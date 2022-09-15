@@ -15,7 +15,7 @@ const InternModel = require('../Model/InternModel')
     try{
       let data = req.body
 //=====================Checking the validation=====================//
-      let { name, mobile, email } = data 
+      let { name, mobile, email } = data //Destructing
        
       if(! ( name && mobile && email )){
         return res.status(400).send({ status: false, msg: "name, mobile and email fields are mandatory." })
