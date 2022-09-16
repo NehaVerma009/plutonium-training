@@ -47,7 +47,7 @@ const createIntern = async function (req, res) {
     let college = await CollegeModel.findOne({ name: collegeName })
     if (college) {
       var id = college._id
-      data["collegeId"] = id
+      data["collegeId"] = id 
     }
     if (college == null) {
       return res.status(400).send({ status: false, message: "College not found given collegename !" })

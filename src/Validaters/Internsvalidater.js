@@ -49,7 +49,7 @@ const isValidEmail = function (email) {
         }
     }
     catch (error) {
-        return message.error
+        return error.message
     }
 }
 
