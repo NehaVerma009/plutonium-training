@@ -58,6 +58,7 @@ const isValidLogoLink = function (logoLink) {
             return "please enter valid logoLink"
         }
     }
+
     catch (error) {
         return error.message
     }
