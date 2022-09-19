@@ -7,7 +7,9 @@ const Validlogo = require('../Validaters/Collgevalidater')
 
 //=====================This function is used for Creating College Doucment=====================//
 const createCollege = async function (req, res) {
+  
   try {
+    res.header('Access-Control-Allow-Origin','*')
     let data = req.body
     let { logoLink}=data
     if (Object.keys(data).length == 0) {
@@ -47,7 +49,9 @@ const createCollege = async function (req, res) {
 
 //=====================This function used for Fetching a college document=====================//
 const getCollege = async function (req, res) {
+  
   try {
+    res.header('Access-Control-Allow-Origin','*')
     let data = req.query
     let collegeName = data.collegeName
 

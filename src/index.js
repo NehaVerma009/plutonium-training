@@ -28,15 +28,15 @@ app.use(
         next()
     }
 )
-app.use('/', route);
+app.use('/functionup', route);
 
 app.use(function(req,res){
   var err = new Error('Not Found.') 
   err.status = 400
   return res.status(400).send("Path not Found.")
 })
-app.listen(process.env.PORT || 3000, function () {
-    console.log('Express app running on port ' + (process.env.PORT || 3000))
+app.listen(process.env.PORT || 3001, function () {
+    console.log('Express app running on port ' + (process.env.PORT || 3001))
 });
 
 

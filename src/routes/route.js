@@ -4,7 +4,7 @@ const router =express.Router()
 let {createCollege,getCollege} = require('../Controllers/CollegeControllers')
 let {createIntern} = require('../Controllers/InternControllers')
 
-router.post('/functionup/colleges',createCollege)
-router.post('/functionup/interns',createIntern)
-router.get('/functionup/collegeDetails',getCollege)
+router.post('/colleges',createCollege)
+router.post('/interns',createIntern)
+router.get('/collegeDetails',getCollege)
 module.exports = router;
