@@ -1,5 +1,5 @@
 const express = require('express');
-const router=express.Router()
+const router =express.Router()
 
 let {createCollege,getCollege} = require('../Controllers/CollegeControllers')
 let {createIntern} = require('../Controllers/InternControllers')

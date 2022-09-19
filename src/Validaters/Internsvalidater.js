@@ -80,7 +80,7 @@ const isValidcollegeName = function (collegeName) {
             return "college name is required."
         }
         if (typeof collegeName !== 'string') {
-            return "collge name should be in string ! "
+            return "college name should be in string ! "
         }
         if (whitespace(collegeName)) {
             return "Make sure college name should not have space ! " 

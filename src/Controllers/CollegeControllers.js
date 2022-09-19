@@ -53,8 +53,10 @@ const getCollege = async function (req, res) {
 
     //===================== Checking length of query=====================//
 
-    if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "Need Some Parameter to get College" })
-    //===================== Fetching collegeName from DB =====================//
+    if (Object.keys(data).length == 0)
+     return res.status(400).send({ status: false, message: "Need Some Parameter to get College" })
+
+     //===================== Fetching collegeName from DB =====================//
     let college = await CollegeModel.findOne({ name: collegeName, isDeleted: false })
     if (college) {
       var id = college._id
