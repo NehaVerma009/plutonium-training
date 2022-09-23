@@ -133,9 +133,12 @@ const getBook = async function(req,res){
  //console.log(book)
      if(!book)
      return res.status(404).send({status:false,message:"No book found"})
-     const data = {...book._doc,reviewsData:reviewData}  //_doc: only the keys which are required are included 
-     //...book == Used Spread Operator
-     return res.status(200).send({status:true,message:"Books list",data:data})
+     
+     //If you use toObject() mongoose will not include virtuals by default
+     const books = book.toObject()
+     books.reviewsData = reviewData
+
+     return res.status(200).send({status:true,message:"Books list",data:books})
  }catch(err)
  {
      return res.status(500).send({status:false,message:err.message})
