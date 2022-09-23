@@ -130,10 +130,11 @@ const getBook = async function(req,res){
       }
      const book = await bookModel.findOne({_id:bookId,isDeleted:false})
      const reviewData = await reviewModel.find({bookId:bookId,isDeleted:false}).select({isDeleted:0,createdAt:0,updatedAt:0,__v:0})
- 
+ //console.log(book)
      if(!book)
      return res.status(404).send({status:false,message:"No book found"})
-     const data = {...book._doc,reviewsData:reviewData}
+     const data = {...book._doc,reviewsData:reviewData}  //_doc: only the keys which are required are included 
+     //...book == Used Spread Operator
      return res.status(200).send({status:true,message:"Books list",data:data})
  }catch(err)
  {
@@ -197,7 +198,7 @@ const updateBook  = async function(req,res){
 
 }
 
-//======================================DeleteBook By Id====================================================================//
+//============================= DeleteBook By Id ==================================================//
 
 const deleteBookById=async function(req,res){
     try{
