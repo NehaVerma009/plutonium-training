@@ -132,7 +132,7 @@ const isValidReleased = function (released) {
     }
 
     if (!isValidate(released)) {
-      return "released Date is not valid";
+      return "Date is not given or invalid";
     }
 
     let date = isDate(released);
