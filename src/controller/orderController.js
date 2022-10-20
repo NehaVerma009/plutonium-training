@@ -2,6 +2,8 @@ const cartModel = require("../model/cartModel")
 const orderModel = require("../model/orderModel")
 const { isValidate, isValidObjectId} = require("../Validator/userValidator");
 
+//***********************create Order*****************************/
+
 const placeOrder = async function (req, res){
     try{
     let data = req.body
@@ -63,11 +65,11 @@ const placeOrder = async function (req, res){
     }
 }
 
+//**********************************update Order************************/
 
 const updateOrder = async function (req, res){
     try{
     let data = req.body
-
     let {orderId} = data
     // if(isValidate(data)) return res.status(400).send({status:false,message:"Input not found"})
    
@@ -90,11 +92,7 @@ const updateOrder = async function (req, res){
       conditions.status = data.status;
     }
 
-    let resData = await orderModel.findByIdAndUpdate(
-        {_id: findOrder._id},
-        conditions,
-        {new: true}
-      )
+    let resData = await orderModel.findByIdAndUpdate({_id: findOrder._id},conditions,{new: true})
       res.status(200).send({ status: true, message: "Success", data: resData });
     }
     catch(err){
