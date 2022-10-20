@@ -13,7 +13,7 @@ const placeOrder = async function (req, res){
 
     let productInCart = await cartModel.findOne({_id:cartId})
     if(!productInCart){
-        return res.status(400).send({status:true,message:"user has not added items in cart"})
+        return res.status(400).send({status:false,message:"user has not added items in cart"})
     }
 
     let checkUser = await cartModel.findOne({userId:userId})
