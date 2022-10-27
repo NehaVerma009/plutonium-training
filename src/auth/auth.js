@@ -47,7 +47,7 @@ const Authorization = async function (req, res, next) {
         let presentUser = await userModel.findById({ _id: userId, isDeleted: false })
         if (!presentUser) return res.status(404).send({ status: false, message: "User not present in db!!!!" })
 
-        if (userId != user) return res.status(400).send({ status: false, message: "Unauthorised Access!!" })
+        if (userId != user) return res.status(403).send({ status: false, message: "Unauthorised Access!!" })
 
         next()
     } catch (error) {

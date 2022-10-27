@@ -40,9 +40,9 @@ const placeOrder = async function (req, res){
         if(data.status != "pending" && data.status != "completed" && data.status != "cancelled")
         return res.status(400).send({ status : false , message : " status should be :- [cancelled , completed , pending]"})
     }
-    if(data.cancellable == false){
-        cartPresent.cancellable = data.cancellable
-    }
+    // if(data.cancellable == false){
+    //     cartPresent.cancellable = data.cancellable
+    // }
 
     let orders= {
         userId: userId,

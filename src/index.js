@@ -2,7 +2,7 @@ const express = require('express')
 const route = require('./route/route.js')
 const mongoose = require('mongoose')
 const app = express()
-const multer= require('multer')
+const multer = require('multer')
 
 app.use(multer().any());
 

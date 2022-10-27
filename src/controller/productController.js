@@ -48,7 +48,7 @@ const product = async function (req, res) {
       // res.send the link back to frontend/postman
       var productImage = await uploadFile(files[0]);
     } else {
-      return res.status(400).send({ status: false, message: "No file found" });
+      return res.status(400).send({ status: false, message: "Image is required" });
     }
 
     //checking for available Sizes of the products
